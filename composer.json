@@ -1,0 +1,66 @@
+{
+  "name": "api-clients/installer",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Cees-Jan Kiewiet",
+      "email": "ceesjank@gmail.com"
+    }
+  ],
+  "require": {
+    "php": "^7.0",
+    "composer/composer": "^1.3",
+    "friendsofphp/php-cs-fixer": "1.11.8",
+    "nikic/php-parser": "^3.0",
+    "ocramius/package-versions": "^1.1",
+    "symfony/console": "3.2.1",
+    "symfony/yaml": "^3.2"
+  },
+  "require-dev": {
+    "api-clients/test-utilities": "^2.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "ApiClients\\Tools\\Installer\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "ApiClients\\Tests\\Tools\\Installer\\": "tests/"
+    }
+  },
+  "config": {
+    "sort-packages": true
+  },
+  "scripts": {
+    "ensure-installed": "composer install --ansi -n -q",
+    "cs": [
+      "@ensure-installed",
+      "phpcs --standard=PSR2 src/"
+    ],
+    "unit": [
+      "@ensure-installed",
+      "phpunit --colors=always -c phpunit.xml.dist --coverage-text --coverage-html covHtml"
+    ],
+    "qa-all": [
+      "@cs",
+      "@unit"
+    ],
+    "qa-windows": [
+      "@cs",
+      "@unit"
+    ],
+    "qa-ci": [
+      "@qa-all"
+    ],
+    "qa-ci-windows": [
+      "@qa-windows"
+    ],
+    "qa-contrib": [
+      "@qa-all"
+    ],
+    "ci-coverage": [
+      "if [ -f ./build/logs/clover.xml ]; then wget https://scrutinizer-ci.com/ocular.phar && php ocular.phar code-coverage:upload --format=php-clover ./build/logs/clover.xml; fi"
+    ]
+  }
+}
