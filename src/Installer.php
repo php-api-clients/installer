@@ -19,7 +19,7 @@ final class Installer
         {
             $yaml = Yaml::parse(
                 file_get_contents(
-                    dirname(dirname(dirname(dirname(__DIR__)))) . DIRECTORY_SEPARATOR . 'installer.yaml'
+                    dirname(dirname(dirname(dirname(__DIR__)))) . DIRECTORY_SEPARATOR . 'installer.yml'
                 )
             );
             var_export($yaml);
