@@ -6,6 +6,7 @@ use PackageVersions\Versions;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Yaml\Yaml;
 use Throwable;
 
 final class Installer
@@ -16,6 +17,13 @@ final class Installer
     {
         try
         {
+            $yaml = Yaml::parse(
+                file_get_contents(
+                    dirname(dirname(dirname(dirname(__DIR__)))) . DIRECTORY_SEPARATOR . 'installer.yaml'
+                )
+            );
+            var_export($yaml);
+            die();
             $app = new Application(
                 self::TITLE,
                 Versions::getVersion('api-clients/middleware-skeleton')
