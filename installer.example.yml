@@ -1,0 +1,27 @@
+package: api-clients/installer
+text:
+  welcome: "Welcome to the installer."
+questions:
+  ns_vendor:
+    description: "Your namespace"
+    question: "What is your vendor namespace?"
+    default: "MyVendor"
+  ns_test_vendor:
+    description: "Your test namespace"
+    question: "What is your vendor test namespace?"
+    default: "MyVendor\\Tests"
+  ns_project:
+    description: "Your project namespace"
+    question: "What is your project namespace?"
+    default: "MyProject"
+  package_name:
+    description: "Your package"
+    question: "What is your package name?"
+    default: "MyVendor"
+  author_name:
+    description: "Author name"
+    question: "What is your name?"
+  author_email:
+    description: "Author email"
+    question: "What is your email address?"
+    validate: "Assert\\Assertion::email"
