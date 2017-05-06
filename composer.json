@@ -19,7 +19,7 @@
     "symfony/yaml": "^3.2"
   },
   "require-dev": {
-    "api-clients/test-utilities": "^2.0"
+    "api-clients/test-utilities": "^3.0.1"
   },
   "autoload": {
     "psr-4": {
