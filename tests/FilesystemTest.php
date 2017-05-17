@@ -20,6 +20,7 @@ final class FilesystemTest extends TestCase
 
         $filesystem = new Filesystem();
         $filesystem->write($tmp, file_get_contents(__FILE__));
+
         self::assertSame(file_get_contents(__FILE__), file_get_contents($tmp));
     }
 }
