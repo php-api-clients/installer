@@ -2,6 +2,7 @@
 
 namespace ApiClients\Tools\Installer;
 
+use InvalidArgumentException;
 use PackageVersions\Versions;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
@@ -11,28 +12,27 @@ use Throwable;
 
 final class Installer
 {
-    const TITLE = 'PHP API Clients Middleware skeleton installer';
+    const TITLE = 'PHP API Clients skeleton installer';
 
-    public static function postCreateProject()
+    public static function postCreateProject(array $arguments)
     {
-        try
-        {
+        try {
+            if (!isset($arguments[1])) {
+                throw new InvalidArgumentException('Missing installer configuration file');
+            }
+
             $yaml = Yaml::parse(
                 file_get_contents(
-                    dirname(dirname(dirname(dirname(__DIR__)))) . DIRECTORY_SEPARATOR . 'installer.yml'
+                    $arguments[1]
                 )
             );
-            var_export($yaml);
-            die();
             $app = new Application(
                 self::TITLE,
-                Versions::getVersion('api-clients/middleware-skeleton')
+                Versions::getVersion('api-clients/installer')
             );
-            $app->add(new Install(Install::COMMAND));
+            $app->add((new Install(Install::COMMAND))->setYaml($yaml));
             $app->find(Install::COMMAND)->run(new ArgvInput([]), new ConsoleOutput());
-        }
-        catch (Throwable $throwable)
-        {
+        } catch (Throwable $throwable) {
             echo get_class($throwable), ' thrown with message: ', $throwable->getMessage(), PHP_EOL;
             echo $throwable->getTraceAsString(), PHP_EOL;
             exit(1);
