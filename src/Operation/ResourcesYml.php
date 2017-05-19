@@ -34,9 +34,10 @@ final class ResourcesYml implements OperationInterface
 
     /**
      * @param array        $replacements
+     * @param array        $environment
      * @param SymfonyStyle $style
      */
-    public function operate(array $replacements, SymfonyStyle $style)
+    public function operate(array $replacements, array $environment, SymfonyStyle $style)
     {
         $path = str_replace(
             'composer.json',

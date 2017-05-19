@@ -70,6 +70,6 @@ final class ResourcesYmlTest extends TestCase
 
         $operation = new ResourcesYml($filesystem->reveal());
 
-        $operation->operate($replacements, $style->reveal());
+        $operation->operate($replacements, [], $style->reveal());
     }
 }

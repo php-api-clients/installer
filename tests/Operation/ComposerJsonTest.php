@@ -116,6 +116,6 @@ final class ComposerJsonTest extends TestCase
 
         $operation = new ComposerJson($jsonFile->reveal());
 
-        $operation->operate($replacements, $style->reveal());
+        $operation->operate($replacements, [], $style->reveal());
     }
 }

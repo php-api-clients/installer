@@ -10,7 +10,8 @@ interface OperationInterface
      * Execute operation with the given $replacements and output any information via $style.
      *
      * @param array        $replacements
+     * @param array        $environment
      * @param SymfonyStyle $style
      */
-    public function operate(array $replacements, SymfonyStyle $style);
+    public function operate(array $replacements, array $environment, SymfonyStyle $style);
 }
