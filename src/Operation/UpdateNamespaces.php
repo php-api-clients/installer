@@ -17,7 +17,7 @@ final class UpdateNamespaces implements OperationInterface
     private $filesystem;
 
     /**
-     * UpdateNamespaces constructor.
+     * @internal
      * @param Filesystem $filesystem
      */
     public function __construct(Filesystem $filesystem)
@@ -30,78 +30,24 @@ final class UpdateNamespaces implements OperationInterface
         return new self(new Filesystem());
     }
 
-    public function operate(array $replacements, SymfonyStyle $style)
+    public function operate(array $replacements, array $environment, SymfonyStyle $style)
     {
-        $r = new \ReflectionClass('Composer\\Autoload\\ClassMapGenerator');
-        $find = $r->getMethod('findClasses');
-        $find->setAccessible(true);
-
-        $classes = [];
-        $style->section('Updating namespaces in PHP files');
         foreach ([
-            'path_src',
-            'path_tests',
-        ] as $dirIndex) {
-            $classes[$dirIndex] = [];
-            $dir = $replacements[$dirIndex];
-            $path = '/home/wyrihaximus/Projects/installer/';
-            $style->write(' Scanning ' . $dir . ' for PHP files ');
-            foreach ($this->iterateDirectory(
-                $path . $dir . DIRECTORY_SEPARATOR,
-                $style
-            ) as $fileName) {
-                $classes[$dirIndex][$fileName] = $find->invoke(null, $fileName);
-            }
-            $style->write(' found ' . count($classes[$dirIndex]) . ' class');
-            $style->writeln(count($classes[$dirIndex]) === 1 ? '' : 'es');
-        }
-        //var_export($classes);
-        foreach ([
-            'path_src' => 'ns_vendor',
-            'path_tests' => 'ns_tests_vendor',
-        ] as $dirIndex => $namespaceIndex) {
+            'path_src' => ['ns_vendor', 'current_ns'],
+            'path_tests' => ['ns_tests_vendor', 'current_ns_tests'],
+        ] as $dirIndex => list($namespaceIndex, $currentNamespace)) {
             $namespace = $replacements[$namespaceIndex] . '\\' . $replacements['ns_project'];
-            foreach ($classes[$dirIndex] as $fileName => $fileClasses) {
+            foreach ($this->filesystem->ls($replacements[$dirIndex]) as $fileName) {
                 $style->text(' * Updating ' . $fileName);
-                $this->updateNamespaces($fileName, $namespace);
+                $this->updateNamespaces($fileName, $namespace, $environment[$currentNamespace] ?? '');
             }
         }
 
-        /*$path = dirname(__DIR__) . DIRECTORY_SEPARATOR;
-        foreach([
-            'src' => self::NS_VENDOR,
-            'tests' => self::NS_TESTS_VENDOR,
-        ] as $dir => $namespace) {
-            $this->iterateDirectory(
-                $path . $dir . DIRECTORY_SEPARATOR,
-                $style,
-                $replacements[$namespace] . '\\' . $replacements[self::NS_PROJECT],
-                $replacements[self::NS_VENDOR] . '\\' . $replacements[self::NS_PROJECT]
-            );
-        }*/
         $style->success('Namespaces updated');
     }
 
-    private function iterateDirectory(string $path, SymfonyStyle $style/*, string $namespace, string $namespaceSrc*/): array
+    private function updateNamespaces(string $fileName, string $namespace, string $currentNamespace)
     {
-        $files = [];
-        $d = dir($path);
-        while (false !== ($entry = $d->read())) {
-            $entryPath = $path . $entry;
-            if (!is_file($entryPath)) {
-                continue;
-            }
-            $style->write('.');
-            $files[] = $entryPath;
-        }
-        $d->close();
-
-        return $files;
-    }
-
-    private function updateNamespaces(string $fileName, string $namespace)
-    {
-        $md5 = md5_file($fileName);
         $stmts = $this->parseFile($fileName);
         if ($stmts === null) {
             return;
@@ -110,24 +56,21 @@ final class UpdateNamespaces implements OperationInterface
             if (!($node instanceof Node\Stmt\Namespace_)) {
                 continue;
             }
+
+            $suffix = str_replace($currentNamespace, '', (string)$node->name);
+
             $stmts[$index] = new Node\Stmt\Namespace_(
                 new Node\Name(
-                    $namespace
+                    $namespace . $suffix
                 ),
-                [],//$node->stmts,
+                $node->stmts,
                 $node->getAttributes()
             );
-
-            //var_export($stmts[$index]);
-            //die();
 
             break;
         }
 
         $this->filesystem->write($fileName, (new Standard())->prettyPrintFile($stmts) . PHP_EOL);
-        while ($md5 === md5($this->filesystem->read($fileName))) {
-            usleep(500);
-        }
     }
 
     private function parseFile(string $fileName)
