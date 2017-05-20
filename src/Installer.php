@@ -18,6 +18,12 @@ final class Installer
 
     public static function postCreateProject()
     {
+        require_once str_replace(
+            'composer.json',
+            'vendor/autoload.php',
+            Factory::getComposerFile()
+        );
+
         try {
             $path = str_replace(
                 'composer.json',
