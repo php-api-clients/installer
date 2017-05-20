@@ -2,6 +2,8 @@
 
 namespace ApiClients\Tools\Installer;
 
+use Composer\Composer;
+use Composer\Factory;
 use InvalidArgumentException;
 use PackageVersions\Versions;
 use Symfony\Component\Console\Application;
@@ -17,6 +19,18 @@ final class Installer
     public static function postCreateProject(array $arguments)
     {
         try {
+            if (!isset($arguments[1])) {
+                $path = str_replace(
+                    'composer.json',
+                    'installer.yml',
+                    Factory::getComposerFile()
+                );
+
+                if (file_exists($path)) {
+                    $arguments[1] = $path;
+                    unset($path);
+                }
+            }
             if (!isset($arguments[1])) {
                 throw new InvalidArgumentException('Missing installer configuration file');
             }
