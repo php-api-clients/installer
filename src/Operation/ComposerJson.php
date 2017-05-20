@@ -54,8 +54,12 @@ final class ComposerJson implements OperationInterface
         ];
 
         $style->text('Updating autoload');
-        $composerJson['autoload']['psr-4'][$replacements['ns_vendor'] . '\\' . $replacements['ns_project'] . '\\'] = 'src/';
-        $composerJson['autoload-dev']['psr-4'][$replacements['ns_tests_vendor'] . '\\' . $replacements['ns_project'] . '\\'] = 'tests/';
+        $composerJson['autoload']['psr-4'] = [
+            $replacements['ns_vendor'] . '\\' . $replacements['ns_project'] . '\\' => 'src/'
+        ];
+        $composerJson['autoload-dev']['psr-4'] = [
+            $replacements['ns_tests_vendor'] . '\\' . $replacements['ns_project'] . '\\' => 'tests/',
+        ];
 
         $style->text('Removing package needed for installation and post create script');
         unset(
