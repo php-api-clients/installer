@@ -38,6 +38,9 @@
       "php": "7.0"
     }
   },
+  "bin": [
+    "bin/installer"
+  ],
   "scripts": {
     "ensure-installed": "composer install --ansi -n -q",
     "cs": [
