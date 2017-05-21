@@ -43,6 +43,8 @@ final class UpdateNamespaces implements OperationInterface
                 $replacements[$dirIndex],
                 Factory::getComposerFile()
             );
+            $path = rtrim($path, '/');
+            $path .= '/';
             foreach ($this->filesystem->ls($path) as $fileName) {
                 $style->text(' * Updating ' . $fileName);
                 $this->updateNamespaces($fileName, $namespace, $environment[$currentNamespace] ?? '');
