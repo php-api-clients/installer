@@ -38,12 +38,12 @@ final class UpdateNamespacesTest extends TestCase
             ],
             [
                 '/path/to/foo.bar.test' => [
-                    'input' => '<?php' . PHP_EOL . PHP_EOL . 'namespace Vendor\\Tests\\Project;' . PHP_EOL . PHP_EOL . 'class fooBarTest {}' . PHP_EOL,
-                    'output' => '<?php' . PHP_EOL . PHP_EOL . 'namespace ns_tests_vendor\\ns_project;' . PHP_EOL . PHP_EOL . 'class fooBarTest' . PHP_EOL . '{' . PHP_EOL . '}' . PHP_EOL,
+                    'input' => '<?php' . PHP_EOL . PHP_EOL . 'namespace Vendor\\Tests\\Project;' . PHP_EOL . PHP_EOL . 'use Vendor\\Project\\fooBar;' . PHP_EOL . PHP_EOL . 'class fooBarTest {}' . PHP_EOL,
+                    'output' => '<?php' . PHP_EOL . PHP_EOL . 'namespace ns_tests_vendor\\ns_project;' . PHP_EOL . PHP_EOL . 'use ns_vendor\\ns_project\\fooBar;' . PHP_EOL . 'class fooBarTest' . PHP_EOL . '{' . PHP_EOL . '}' . PHP_EOL,
                 ],
                 '/path/to/sub/foo.bar.test' => [
-                    'input' => '<?php' . PHP_EOL . PHP_EOL . 'namespace Vendor\\Tests\\Project\\Sub;' . PHP_EOL . PHP_EOL . 'class fooBarTest {}' . PHP_EOL,
-                    'output' => '<?php' . PHP_EOL . PHP_EOL . 'namespace ns_tests_vendor\\ns_project\\Sub;' . PHP_EOL . PHP_EOL . 'class fooBarTest' . PHP_EOL . '{' . PHP_EOL . '}' . PHP_EOL,
+                    'input' => '<?php' . PHP_EOL . PHP_EOL . 'namespace Vendor\\Tests\\Project\\Sub;' . PHP_EOL . PHP_EOL . 'use Vendor\\Project\\Sub\\fooBar;' . PHP_EOL . PHP_EOL . 'class fooBarTest {}' . PHP_EOL,
+                    'output' => '<?php' . PHP_EOL . PHP_EOL . 'namespace ns_tests_vendor\\ns_project\\Sub;' . PHP_EOL . PHP_EOL . 'use ns_vendor\\ns_project\\Sub\\fooBar;' . PHP_EOL . 'class fooBarTest' . PHP_EOL . '{' . PHP_EOL . '}' . PHP_EOL,
                 ],
             ],
         ];
