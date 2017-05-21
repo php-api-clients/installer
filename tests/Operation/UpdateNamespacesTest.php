@@ -59,12 +59,12 @@ final class UpdateNamespacesTest extends TestCase
     public function testOperate(array $replacements, array $env, array $lsSrcFiles, array $lsTestsFiles)
     {
         $filesystem = $this->prophesize(Filesystem::class);
-        $filesystem->ls('path_src')->shouldBeCalled()->willReturn(array_keys($lsSrcFiles));
+        $filesystem->ls('./path_src')->shouldBeCalled()->willReturn(array_keys($lsSrcFiles));
         foreach ($lsSrcFiles as $fileName => $io) {
             $filesystem->read($fileName)->shouldBeCalled()->willReturn($io['input']);
             $filesystem->write($fileName, $io['output'])->shouldBeCalled();
         }
-        $filesystem->ls('path_tests')->shouldBeCalled()->willReturn(array_keys($lsTestsFiles));
+        $filesystem->ls('./path_tests')->shouldBeCalled()->willReturn(array_keys($lsTestsFiles));
         foreach ($lsTestsFiles as $fileName => $io) {
             $filesystem->read($fileName)->shouldBeCalled()->willReturn($io['input']);
             $filesystem->write($fileName, $io['output'])->shouldBeCalled();

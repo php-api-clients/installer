@@ -4,6 +4,7 @@ namespace ApiClients\Tools\Installer\Operation;
 
 use ApiClients\Tools\Installer\Filesystem;
 use ApiClients\Tools\Installer\OperationInterface;
+use Composer\Factory;
 use PhpParser\Node;
 use PhpParser\ParserFactory;
 use PhpParser\PrettyPrinter\Standard;
@@ -37,7 +38,12 @@ final class UpdateNamespaces implements OperationInterface
             'path_tests' => ['ns_tests_vendor', 'current_ns_tests'],
         ] as $dirIndex => list($namespaceIndex, $currentNamespace)) {
             $namespace = $replacements[$namespaceIndex] . '\\' . $replacements['ns_project'];
-            foreach ($this->filesystem->ls($replacements[$dirIndex]) as $fileName) {
+            $path = str_replace(
+                'composer.json',
+                $replacements[$dirIndex],
+                Factory::getComposerFile()
+            );
+            foreach ($this->filesystem->ls($path) as $fileName) {
                 $style->text(' * Updating ' . $fileName);
                 $this->updateNamespaces($fileName, $namespace, $environment[$currentNamespace] ?? '');
             }
