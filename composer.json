@@ -9,7 +9,7 @@
   ],
   "require": {
     "php": "^7.0",
-    "api-clients/branding": "dev-master",
+    "api-clients/branding": "^1.0",
     "beberlei/assert": "^2.7",
     "composer/composer": "^1.3",
     "igorw/get-in": "^1.0",
