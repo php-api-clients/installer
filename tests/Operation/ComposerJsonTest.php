@@ -22,6 +22,14 @@ final class ComposerJsonTest extends TestCase
             ],
             [
                 'require' => [
+                    'api-clients/installer',
+                ],
+                'scripts' => [
+                    'post-create-project-cmd',
+                ]
+            ],
+            [
+                'require' => [
                     'api-clients/installer' => '123',
                 ],
                 'scripts' => [
@@ -59,6 +67,14 @@ final class ComposerJsonTest extends TestCase
                 'ns_vendor'       => 'ns_vendor',
                 'ns_tests_vendor' => 'ns_tests_vendor',
                 'ns_project'      => 'ns_project',
+            ],
+            [
+                'require' => [
+                    'api-clients/installer',
+                ],
+                'scripts' => [
+                    'post-create-project-cmd',
+                ]
             ],
             [
                 'name' => 'vendor/name',
@@ -102,12 +118,13 @@ final class ComposerJsonTest extends TestCase
 
     /**
      * @param array $replacements
+     * @param array $environment
      * @param array $inputJson
      * @param array $outputJson
      *
      * @dataProvider provideOperations
      */
-    public function testOperate(array $replacements, array $inputJson, array $outputJson)
+    public function testOperate(array $replacements, array $environment, array $inputJson, array $outputJson)
     {
         $style = $this->prophesize(SymfonyStyle::class);
         $jsonFile = $this->prophesize(JsonFile::class);
@@ -116,6 +133,6 @@ final class ComposerJsonTest extends TestCase
 
         $operation = new ComposerJson($jsonFile->reveal());
 
-        $operation->operate($replacements, [], $style->reveal());
+        $operation->operate($replacements, $environment, $style->reveal());
     }
 }

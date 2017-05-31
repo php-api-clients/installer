@@ -62,13 +62,32 @@ final class ComposerJson implements OperationInterface
         ];
 
         $style->text('Removing package needed for installation and post create script');
-        unset(
-            $composerJson['require']['api-clients/installer'],
-            $composerJson['scripts']['post-create-project-cmd']
-        );
+
+        foreach (['require', 'require-dev', 'scripts'] as $index) {
+            if (!isset($environment[$index])) {
+                continue;
+            }
+
+            $itemCount = count($environment[$index]);
+            $style->text('Removing ' . $itemCount . ' item' . ($itemCount > 1 ? 's' : '') . ' from ' . $index);
+            $composerJson = $this->removeItemFromIndex($composerJson, $environment, $index);
+        }
 
         $style->text('Writing updated composer.json');
         $this->jsonFile->write($composerJson);
         $style->success('Updated composer.json');
+    }
+
+    private function removeItemFromIndex(array $composerJson, array $environment, string $index): array
+    {
+        foreach ($environment[$index] as $package) {
+            if (!isset($composerJson[$index][$package])) {
+                continue;
+            }
+
+            unset($composerJson[$index][$package]);
+        }
+
+        return $composerJson;
     }
 }
