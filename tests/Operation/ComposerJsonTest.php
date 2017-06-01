@@ -114,6 +114,57 @@ final class ComposerJsonTest extends TestCase
                 ],
             ],
         ];
+
+        yield [
+            [
+                'package_name'    => 'package_name',
+                'author_name'     => 'author_name',
+                'author_email'    => 'author_email',
+                'ns_vendor'       => 'ns_vendor',
+                'ns_tests_vendor' => 'ns_tests_vendor',
+                'ns_project'      => 'ns_project',
+            ],
+            [],
+            [
+                'name' => 'vendor/name',
+                'authors' => [],
+                'require' => [
+                    'php' => '^7.0',
+                    'api-clients/installer' => '123',
+                ],
+                'scripts' => [
+                    'cs' => 'cs-fixer',
+                    'post-create-project-cmd' => ['a', 'b', 'c'],
+                ],
+            ],
+            [
+                'name' => 'package_name',
+                'authors' => [
+                    [
+                        'name' => 'author_name',
+                        'email' => 'author_email',
+                    ],
+                ],
+                'require' => [
+                    'php' => '^7.0',
+                    'api-clients/installer' => '123',
+                ],
+                'autoload' => [
+                    'psr-4' => [
+                        'ns_vendor\\ns_project\\' => 'src/',
+                    ],
+                ],
+                'autoload-dev' => [
+                    'psr-4' => [
+                        'ns_tests_vendor\\ns_project\\' => 'tests/',
+                    ],
+                ],
+                'scripts' => [
+                    'cs' => 'cs-fixer',
+                    'post-create-project-cmd' => ['a', 'b', 'c'],
+                ],
+            ],
+        ];
     }
 
     /**
