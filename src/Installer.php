@@ -77,7 +77,7 @@ final class Installer
 
             protected function doWrite($message, $newline)
             {
-                $this->io->write($message);
+                $this->io->write($message, $newline);
             }
         };
 
