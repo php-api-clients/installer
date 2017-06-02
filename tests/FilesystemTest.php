@@ -37,15 +37,20 @@ final class FilesystemTest extends TestCase
         touch($fileTwo);
         touch($fileDOne);
 
+        $expectedFiles = [
+            $fileOne,
+            $fileTwo,
+            $fileDOne,
+        ];
+
         $filesystem = new Filesystem();
         $files = $filesystem->ls($tmp);
 
+
+        sort($expectedFiles);
+        sort($files);
         self::assertSame(
-            [
-                $fileOne,
-                $fileTwo,
-                $fileDOne,
-            ],
+            $expectedFiles,
             $files
         );
     }
