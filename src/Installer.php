@@ -70,8 +70,7 @@ final class Installer
              */
             public function __construct(IOInterface $io)
             {
-
-                parent::__construct(Output::OUTPUT_RAW);
+                parent::__construct();
                 $this->io = $io;
             }
 
