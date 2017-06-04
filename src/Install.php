@@ -146,9 +146,11 @@ final class Install extends Command
             return;
         }
 
+        $package = $this->yaml['package'];
         if (isset($this->yaml['text']['ascii_art_package'])) {
-            $path = package($this->yaml['text']['ascii_art_package'])->getPath() . DIRECTORY_SEPARATOR;
+            $package = $this->yaml['text']['ascii_art_package'];
         }
+        $path = package($package)->getPath() . DIRECTORY_SEPARATOR;
 
         $files = $this->yaml['text']['ascii_art_file'];
         if (!is_array($files)) {
