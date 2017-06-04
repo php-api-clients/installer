@@ -46,7 +46,7 @@ text:
     - ascii.medium.art
     - ascii.large.art
   ascii_art_package: api-clients/branding
-env:
+config:
   current_ns: "ApiClients\\Skeleton"
   current_ns_tests: "ApiClients\\Tests\\Skeleton"
   require:
