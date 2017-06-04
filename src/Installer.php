@@ -2,7 +2,9 @@
 
 namespace ApiClients\Tools\Installer;
 
+use Closure;
 use Composer\Factory;
+use Composer\IO\ConsoleIO;
 use Composer\IO\IOInterface;
 use Composer\Script\Event;
 use InvalidArgumentException;
@@ -10,6 +12,7 @@ use PackageVersions\Versions;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\Output;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Yaml\Yaml;
 use Throwable;
 
@@ -56,9 +59,18 @@ final class Installer
             Versions::getVersion('api-clients/installer')
         );
         $app->add((new Install(Install::COMMAND))->setYaml($yaml));
+        $app->find(Install::COMMAND)->run(new ArgvInput([]), self::getOutput($io));
+    }
 
-        $consoleOutput = new class($io) extends Output
-        {
+    private static function getOutput(IOInterface $io): OutputInterface
+    {
+        if ($io instanceof ConsoleIO) {
+            return Closure::bind(function (ConsoleIO $consoleIO): OutputInterface {
+                return $consoleIO->ouput;
+            }, null, ConsoleIO::class)($io);
+        }
+
+        return new class($io) extends Output {
             /**
              * @var IOInterface
              */
@@ -79,7 +91,5 @@ final class Installer
                 $this->io->write($message, $newline);
             }
         };
-
-        $app->find(Install::COMMAND)->run(new ArgvInput([]), $consoleOutput);
     }
 }
