@@ -66,7 +66,7 @@ final class Installer
     {
         if ($io instanceof ConsoleIO) {
             return Closure::bind(function (ConsoleIO $consoleIO): OutputInterface {
-                return $consoleIO->ouput;
+                return $consoleIO->output;
             }, null, ConsoleIO::class)($io);
         }
 
