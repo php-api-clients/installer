@@ -33,14 +33,14 @@ final class UpdateNamespaces implements OperationInterface
         return new self(new Filesystem());
     }
 
-    public function operate(array $replacements, array $environment, SymfonyStyle $style)
+    public function operate(array $replacements, array $configuration, SymfonyStyle $style)
     {
         $classes = [];
         foreach ([
             'path_src' => ['ns_vendor', 'current_ns'],
             'path_tests' => ['ns_tests_vendor', 'current_ns_tests'],
         ] as $dirIndex => list($namespaceIndex, $currentNamespace)) {
-            $oldNamespace = $environment[$currentNamespace] ?? '';
+            $oldNamespace = $configuration[$currentNamespace] ?? '';
             $newNamespace = $replacements[$namespaceIndex] . '\\' . $replacements['ns_project'];
             $path = str_replace(
                 'composer.json',
@@ -63,7 +63,7 @@ final class UpdateNamespaces implements OperationInterface
             'path_src' => ['ns_vendor', 'current_ns'],
             'path_tests' => ['ns_tests_vendor', 'current_ns_tests'],
         ] as $dirIndex => list($namespaceIndex, $currentNamespace)) {
-            $oldNamespace = $environment[$currentNamespace] ?? '';
+            $oldNamespace = $configuration[$currentNamespace] ?? '';
             $newNamespace = $replacements[$namespaceIndex] . '\\' . $replacements['ns_project'];
             $path = str_replace(
                 'composer.json',

@@ -169,13 +169,13 @@ final class ComposerJsonTest extends TestCase
 
     /**
      * @param array $replacements
-     * @param array $environment
+     * @param array $configuration
      * @param array $inputJson
      * @param array $outputJson
      *
      * @dataProvider provideOperations
      */
-    public function testOperate(array $replacements, array $environment, array $inputJson, array $outputJson)
+    public function testOperate(array $replacements, array $configuration, array $inputJson, array $outputJson)
     {
         $style = $this->prophesize(SymfonyStyle::class);
         $jsonFile = $this->prophesize(JsonFile::class);
@@ -184,6 +184,6 @@ final class ComposerJsonTest extends TestCase
 
         $operation = new ComposerJson($jsonFile->reveal());
 
-        $operation->operate($replacements, $environment, $style->reveal());
+        $operation->operate($replacements, $configuration, $style->reveal());
     }
 }

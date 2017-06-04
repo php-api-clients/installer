@@ -33,10 +33,10 @@ final class ComposerJson implements OperationInterface
 
     /**
      * @param array        $replacements
-     * @param array        $environment
+     * @param array        $configuration
      * @param SymfonyStyle $style
      */
-    public function operate(array $replacements, array $environment, SymfonyStyle $style)
+    public function operate(array $replacements, array $configuration, SymfonyStyle $style)
     {
         $style->section('Updating composer.json');
         $style->text('Reading composer.json');
@@ -64,13 +64,13 @@ final class ComposerJson implements OperationInterface
         $style->text('Removing package needed for installation and post create script');
 
         foreach (['require', 'require-dev', 'scripts'] as $index) {
-            if (!isset($environment[$index])) {
+            if (!isset($configuration[$index])) {
                 continue;
             }
 
-            $itemCount = count($environment[$index]);
+            $itemCount = count($configuration[$index]);
             $style->text('Removing ' . $itemCount . ' item' . ($itemCount > 1 ? 's' : '') . ' from ' . $index);
-            $composerJson = $this->removeItemFromIndex($composerJson, $environment, $index);
+            $composerJson = $this->removeItemFromIndex($composerJson, $configuration, $index);
         }
 
         $style->text('Writing updated composer.json');
@@ -78,9 +78,9 @@ final class ComposerJson implements OperationInterface
         $style->success('Updated composer.json');
     }
 
-    private function removeItemFromIndex(array $composerJson, array $environment, string $index): array
+    private function removeItemFromIndex(array $composerJson, array $configuration, string $index): array
     {
-        foreach ($environment[$index] as $package) {
+        foreach ($configuration[$index] as $package) {
             if (!isset($composerJson[$index][$package])) {
                 continue;
             }

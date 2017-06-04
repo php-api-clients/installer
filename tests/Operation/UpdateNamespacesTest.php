@@ -51,12 +51,13 @@ final class UpdateNamespacesTest extends TestCase
 
     /**
      * @param array $replacements
-     * @param array $inputJson
-     * @param array $outputJson
+     * @param array $configuration
+     * @param array $lsSrcFiles
+     * @param array $lsTestsFiles
      *
      * @dataProvider provideOperations
      */
-    public function testOperate(array $replacements, array $env, array $lsSrcFiles, array $lsTestsFiles)
+    public function testOperate(array $replacements, array $configuration, array $lsSrcFiles, array $lsTestsFiles)
     {
         $filesystem = $this->prophesize(Filesystem::class);
         $filesystem->ls('./path_src/')->shouldBeCalled()->willReturn(array_keys($lsSrcFiles));
@@ -73,6 +74,6 @@ final class UpdateNamespacesTest extends TestCase
         $style = $this->prophesize(SymfonyStyle::class);
 
         $operation = new UpdateNamespaces($filesystem->reveal());
-        $operation->operate($replacements, $env, $style->reveal());
+        $operation->operate($replacements, $configuration, $style->reveal());
     }
 }

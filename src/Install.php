@@ -101,7 +101,7 @@ final class Install extends Command
                 $style->text('Creating your middleware package now.');
                 /** @var callable $operation */
                 foreach ($this->yaml['operations'] as $operation) {
-                    $operation()->operate($replacements, $this->yaml['env'] ?? [], $style);
+                    $operation()->operate($replacements, $this->yaml['config'] ?? [], $style);
                 }
                 $style->section('Package creation has been successfully.');
                 $style->text('Next up we\'re running composer update twice to ensure all traces of this installer are gone.');
