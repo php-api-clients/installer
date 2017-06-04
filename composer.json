@@ -1,5 +1,6 @@
 {
   "name": "api-clients/installer",
+  "description": "YAML based project installer",
   "license": "MIT",
   "authors": [
     {
