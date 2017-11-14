@@ -8,7 +8,7 @@ use Composer\IO\ConsoleIO;
 use Composer\IO\IOInterface;
 use Composer\Script\Event;
 use InvalidArgumentException;
-use PackageVersions\Versions;
+use Jean85\PrettyVersions;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\Output;
@@ -56,7 +56,7 @@ final class Installer
         );
         $app = new Application(
             self::TITLE,
-            Versions::getVersion('api-clients/installer')
+            PrettyVersions::getVersion('api-clients/installer')->getShortVersion()
         );
         $app->add((new Install(Install::COMMAND))->setYaml($yaml));
         $app->find(Install::COMMAND)->run(new ArgvInput([]), self::getOutput($io));
