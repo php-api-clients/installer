@@ -35,19 +35,24 @@
         },
         {
             "name": "beberlei/assert",
-            "version": "v3.2.2",
+            "version": "v3.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/beberlei/assert.git",
-                "reference": "5547e7d03f8c6be121b8b9db6d6ed5a22ffdcb01"
+                "reference": "65b8152224aef7d3c197d5db05211d4319711b66"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/beberlei/assert/zipball/5547e7d03f8c6be121b8b9db6d6ed5a22ffdcb01",
-                "reference": "5547e7d03f8c6be121b8b9db6d6ed5a22ffdcb01",
+                "url": "https://api.github.com/repos/beberlei/assert/zipball/65b8152224aef7d3c197d5db05211d4319711b66",
+                "reference": "65b8152224aef7d3c197d5db05211d4319711b66",
                 "shasum": ""
             },
             "require": {
+                "ext-ctype": "*",
+                "ext-intl": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "ext-simplexml": "*",
                 "php": "^7"
             },
             "require-dev": {
@@ -86,7 +91,7 @@
                 "assertion",
                 "validation"
             ],
-            "time": "2019-08-23T16:04:58+00:00"
+            "time": "2019-08-23T17:56:26+00:00"
         },
         {
             "name": "composer/ca-bundle",
